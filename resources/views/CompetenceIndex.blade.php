@@ -26,29 +26,28 @@
     @endif
 
     <main>
-        <table class="table">
+        <table class="table container">
             <thead class="thead-dark row">
-            <tr class="row">
-                <div class="col-md-12">
-                <th>
+            <tr class="col-md-12">
+                <th class="col-md-1">
                     #
                 </th>
-                <th>
+                <th class="col-md-auto">
                     Libellé des compétences
                 </th>
-                <th>
+                <th class="col-md-7"></th>
+                <th class="col-md-4">
                     ACTIONS
                 </th>
-                </div>
             </tr>
             </thead>
 
-            <tbody>
+            <tbody class="row">
             @foreach($competences as $competence)
-                <tr>
-                    <td>{{ $competence->id }}</td>
-                    <td>{{ $competence->libelle }}</td>
-                    <td>
+                <tr class="col-md-12">
+                    <td class="col-md-1">{{ $competence->id }}</td>
+                    <td class="col-md-9">{{ $competence->libelle }}</td>
+                    <td class="col-md-2">
                         <form action="{{route('competence.show', $competence->id)}}" method="post">
                             @csrf
                             @method('GET')
@@ -56,7 +55,7 @@
                             <button type="submit" class="btn-primary btn-sm">Consulter</button>
                         </form>
                     </td>
-                    <td>
+                    <td class="col-md-2">
                         <form action="{{route('competence.edit', $competence->id)}}" method="post">
                             @csrf
                             @method('GET')
@@ -64,10 +63,10 @@
                             <button type="submit" class="btn-primary btn-sm">Modifier</button>
                         </form>
                     </td>
-                    <td>
+                    <td class="col-md-2">
                         <form action="{{route('competence.destroy', $competence->id)}}" method="post">
                             @csrf
-                            @method('GET')
+                            @method('DELETE')
 
                             <button type="submit" class="btn-primary btn-sm">Supprimer</button>
                         </form>

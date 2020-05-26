@@ -75,19 +75,22 @@ class CompetenceController extends Controller
      * @param object modèle compétence $competence
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CompetenceRequest $competenceRequest, Competence $competence)
     {
+        $competence->update($competenceRequest->all());
+        return redirect()->route('competence.index')->with('information', 'Modification effectué avec succès');
 
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param object modèle compétence $competence
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Competence $competence)
     {
-        //
+        $competence->delete();
+        return back()->with('information','Suppression effectué avec succès');
     }
 }
