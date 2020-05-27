@@ -8,4 +8,8 @@ class Metier extends Model
 {
     //données pouvant être mises à jour sans risque
     protected $fillable = ['libelle', 'description', 'slug'];
+
+    public static function create(array $all)
+    {
+    }
 }

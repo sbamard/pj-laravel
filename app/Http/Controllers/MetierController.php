@@ -39,20 +39,19 @@ class MetierController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $Metierrequest
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(MetierRequest $metierRequest)
     {
         Metier::create($metierRequest->all());
         return redirect()->route('metier.index')->with('information', 'Enregistrement effectué avec succès');
-    dd($metierRequest);
     }
 
     /**
      * Display the specified resource.
      *
      * @param object modèle compétence $metier
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show(Metier $metier)
     {
@@ -63,7 +62,7 @@ class MetierController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function edit(Metier $metier)
     {
@@ -75,7 +74,7 @@ class MetierController extends Controller
      *
      * @param MetierRequest $metierRequest
      * @param Metier $metier
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(MetierRequest $metierRequest, Metier $metier)
     {
@@ -88,7 +87,7 @@ class MetierController extends Controller
      * Remove the specified resource from storage.
      *
      * @param object modèle compétence $metier
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Metier $metier)
     {
