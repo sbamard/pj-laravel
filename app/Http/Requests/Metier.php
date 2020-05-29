@@ -31,9 +31,6 @@ class Metier extends FormRequest
         ];
     }
 
-    /*
-     * Préparation / format / avant validation
-     * */
     protected function prepareForValidation()
     {
         $this->merge([

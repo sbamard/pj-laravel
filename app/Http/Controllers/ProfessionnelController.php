@@ -3,33 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Professionnel;
+use App\Competence;
 use App\Metier;
-use App\Http\Requests\Professionnel as ProfessionnelRequest;
-
-//noter l'alias
-
+use App\Http\Requests\Professionnel as ProfessionnelRequest; //Noter l'alias//
 //use Illuminate\Http\Request;
-
 
 class ProfessionnelController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Http\Response
      */
-    public function index($slug = null)
+    public function index($slug=null)
     {
-        //creer un objet unique pour les 2 cas : avec ou sans slug
+        //Créer un objet unique pour les deux cas de figure : avec ou sans slug
         $obProfessionnels = $slug ?
-            Metier::where('slug','=', $slug)->firstOrFail()->professionnels:
+            Metier::where('slug', '=', $slug)->firstOrFail()->professionnels():
             Professionnel::query();
-        //recuperation de la liste
-        $professionnels = $obProfessionnels->get();
 
-        $metiers = Metier::all();
+        //Récupération de la liste
+        $professionnels = $obProfessionnels->get();
+        $metiers = Metier::all()->sortBy('libelle');
+
         //enfin en réponse la vue
-        return view('professionnelIndex', compact('professionnels', 'metiers', 'slug'));
+        return view('ProfessionnelIndex', compact('professionnels', 'metiers', 'slug'));
     }
 
     /**
@@ -39,62 +37,91 @@ class ProfessionnelController extends Controller
      */
     public function create()
     {
-        //
+        $competences = Competence::all()->sortBy('libelle'); //Trier par ordre alphabétique
+        $metiers = Metier::all();
+        return view('ProfessionnelCreate', compact('metiers', 'competences'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param  App\Http\Requests\Professionnel $professionnelRequest
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProfessionnelRequest $professionnelRequest)
     {
-        //
+        //Récupération des données validées dans un tableau
+        $valeursDuFormulaire = $professionnelRequest->all();
+        //Convertir la rubrique domaine de tableau vers une liste de valeur
+        $laConversion = implode(',', $professionnelRequest->input('domaine'));
+        //Affectation de la chaine ($laConversion) à la propriété domaine de $valeursDuFormulaire
+        $valeursDuFormulaire['domaine'] = $laConversion;
+        //Enregistrement en BD puis récupération principalement de l'identifiant créé
+        $professionnel = Professionnel::create($valeursDuFormulaire);
+        //Enregistrement dans la table pivot
+        $professionnel->competences()->attach($professionnelRequest->comp);
+        return redirect()->route('professionnel.index')->with('information', 'Le professionnel a bien été créé');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param  objet $professionnel
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Professionnel $professionnel)
     {
-        //
+
+        $tabDomaine = explode(',', $professionnel->domaine);
+        $professionnel->domaine = $tabDomaine;
+        $metier = $professionnel->metier->libelle;
+//        dd($professionnel);
+        return view('ProfessionnelShow', compact('professionnel', 'metier'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
+     * @param  objet $professionnel
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Professionnel $professionnel)
     {
-        //
+        $tabDomaine = explode(',', $professionnel->domaine);
+        $professionnel->domaine = $tabDomaine;
+        $metiers = Metier::all();
+        return view('ProfessionnelEdit', compact('professionnel', 'metiers'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  App\Http\Requests\Professionnel $professionnelRequest
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ProfessionnelRequest $professionnelRequest, Professionnel $professionnel)
     {
-        //
+        //Récupération des données validées dans un tableau
+        $valeursDuFormulaire = $professionnelRequest->all();
+        //Convertir la rubrique domaine de tableau vers une liste de valeur
+        $laConversion = implode(',', $professionnelRequest->input('domaine'));
+        //Affectation de la chaine ($laConversion) à la propriété domaine de $valeursDuFormulaire
+        $valeursDuFormulaire['domaine'] = $laConversion;
+        //Enregistrement en BD
+        $professionnel->update($valeursDuFormulaire);
+        return redirect()->route('professionnel.index')->with('information', 'Le professionnel a bien été modifié');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param  object modèle compétence $professionnel
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Professionnel $professionnel)
     {
-        //
+        $professionnel->delete();
+        return back()->with('information','Supression effectuée avec succès.');
     }
 }

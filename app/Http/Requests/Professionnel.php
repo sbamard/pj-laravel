@@ -13,7 +13,7 @@ class Professionnel extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -29,10 +29,19 @@ class Professionnel extends FormRequest
             'cp' => ['required', 'string', 'min:5', 'max:5'],
             'ville' => ['required', 'string', 'max:38'],
             'telephone' => ['required', 'string', 'max:14'],
-            'mail' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'max:255'],
             'formation' => ['required'],
             'domaine' => ['required'],
             'metier_id' => ['required'],
+            'comp' => ['required'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'metier_id.required' => 'Vous devez selectionner le métier principal du professionnel',
+            'comp.required' => 'Vous devez selectionner au moins une compétence',
         ];
     }
 }

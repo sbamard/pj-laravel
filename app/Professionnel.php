@@ -6,12 +6,25 @@ use Illuminate\Database\Eloquent\Model;
 
 class Professionnel extends Model
 {
-    //données pouvant etre transmise sans risque
-    protected $fillable = ['prenom', 'nom', 'cp', 'ville', 'telephone', 'mail', 'formation', 'domaine', 'source', 'observation', 'metier_id'];
+    // données pouvant être mises à jour sans risque
+    protected $fillable = ['prenom', 'nom', 'cp', 'ville', 'telephone', 'email',
+        'formation', 'domaine', 'source', 'observation', 'metier_id'];
 
-    public function metier()
-    {
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function metier(){
+
         return $this->belongsTo(Metier::class);
+
     }
+
+    public function competences(){
+
+        return $this->belongsToMany(Competence::class)->withTimestamps();
+
+    }
+
 
 }

@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-//use Illuminate\Http\Request;
-/*
- * Formulaire de requête utilisé (avec un alias 'as CompetenceRequest')
- */
-
-use App\Http\Requests\Competence as CompetenceRequest;
 use App\Competence;
+
+//Formulaire de requête utilisé (noter l'alias)
+use App\Http\Requests\Competence as CompetenceRequest;
+
+use Illuminate\Http\Request;
 
 class CompetenceController extends Controller
 {
@@ -20,7 +19,7 @@ class CompetenceController extends Controller
     public function index()
     {
         $competences = Competence::all();
-        //dd($competences);
+        //dd($competences); //Pour faire un vardump
         return view('CompetenceIndex', compact('competences'));
     }
 
@@ -37,19 +36,20 @@ class CompetenceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $Competencerequest
+     * @param  App\Http\Requests\Competence  $CompetenceRequest
      * @return \Illuminate\Http\Response
      */
     public function store(CompetenceRequest $competenceRequest)
     {
         Competence::create($competenceRequest->all());
-        return redirect()->route('competence.index')->with('information', 'Enregistrement effectué avec succès');
+
+        return redirect()->route('competence.index')->with('information','Enregistrement effectué avec succès.');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param object modèle compétence $competence
+     * @param  object modèle compétence $competence
      * @return \Illuminate\Http\Response
      */
     public function show(Competence $competence)
@@ -60,7 +60,7 @@ class CompetenceController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
+     * @param  object modèle compétence $competence
      * @return \Illuminate\Http\Response
      */
     public function edit(Competence $competence)
@@ -71,26 +71,26 @@ class CompetenceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request\Competence $CompetenceRequest
-     * @param object modèle compétence $competence
+     * @param  App\Http\Requests\Competence  $CompetenceRequest
+     * @param  object modèle compétence $competence
      * @return \Illuminate\Http\Response
      */
     public function update(CompetenceRequest $competenceRequest, Competence $competence)
     {
         $competence->update($competenceRequest->all());
-        return redirect()->route('competence.index')->with('information', 'Modification effectué avec succès');
+        return redirect()->route('competence.index')->with('information','Modification effectuée avec succès.');
 
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param object modèle compétence $competence
+     * @param  object modèle compétence $competence
      * @return \Illuminate\Http\Response
      */
     public function destroy(Competence $competence)
     {
         $competence->delete();
-        return back()->with('information','Suppression effectué avec succès');
+        return back()->with('information','Supression effectuée avec succès.');
     }
 }

@@ -15,14 +15,14 @@ class DatabaseSeeder extends Seeder
         App\Competence::create(
             [
                 'libelle' => 'Wordpress',
-                'description' => 'Wordpress est un système de gestion de contenu gratuit, libre et opensource',
+                'description' => 'Wordpress est un système de gestion de contenu.',
             ]
         );
 
         App\Competence::create(
             [
-                'libelle' => 'HTML',
-                'description' => 'Hyper Text Markup Language',
+                'libelle' => 'PHP Orienté Objet',
+                'description' => 'Langage de programmation écrit en langage C.',
             ]
         );
     }

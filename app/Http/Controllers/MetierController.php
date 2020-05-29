@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers;
 
-//use Illuminate\Http\Request;
-/*
- * Formulaire de requête utilisé (avec un alias 'as MetierRequest')
- */
-
-use App\Http\Requests\Metier as MetierRequest;
 use App\Metier;
-use function Sodium\add;
+
+//Formulaire de requête utilisé (noter l'alias)
+use App\Http\Requests\Metier as MetierRequest;
 
 class MetierController extends Controller
 {
@@ -21,7 +17,6 @@ class MetierController extends Controller
     public function index()
     {
         $metiers = Metier::all();
-        //dd($metiers);
         return view('MetierIndex', compact('metiers'));
     }
 
@@ -38,20 +33,21 @@ class MetierController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $Metierrequest
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  App\Http\Requests\Metier  $MetierRequest
+     * @return \Illuminate\Http\Response
      */
     public function store(MetierRequest $metierRequest)
     {
         Metier::create($metierRequest->all());
-        return redirect()->route('metier.index')->with('information', 'Enregistrement effectué avec succès');
+
+        return redirect()->route('metier.index')->with('information','Enregistrement effectué avec succès.');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param object modèle compétence $metier
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @param  object modèle métier $metier
+     * @return \Illuminate\Http\Response
      */
     public function show(Metier $metier)
     {
@@ -61,8 +57,8 @@ class MetierController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @param  object modèle métier $metier
+     * @return \Illuminate\Http\Response
      */
     public function edit(Metier $metier)
     {
@@ -72,26 +68,39 @@ class MetierController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param MetierRequest $metierRequest
-     * @param Metier $metier
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  App\Http\Requests\Metier  $MetierRequest
+     * @param  object modèle métier $metier
+     * @return \Illuminate\Http\Response
      */
     public function update(MetierRequest $metierRequest, Metier $metier)
     {
         $metier->update($metierRequest->all());
-        return redirect()->route('metier.index')->with('information', 'Modification effectué avec succès');
-
+        return redirect()->route('metier.index')->with('information','Modification effectuée avec succès.');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param object modèle compétence $metier
-     * @return \Illuminate\Http\RedirectResponse
+     * @param  object modèle métier $metier
+     * @return \Illuminate\Http\Response
      */
     public function destroy(Metier $metier)
     {
         $metier->delete();
-        return back()->with('information', 'Suppression effectué avec succès');
+        return redirect()->route('metier.index')->with('information','Suppression effectuée avec succès.');
     }
+
+
+    /**
+     * Appel formulaire en suppression.
+     *
+     * @param  Metier $metier
+     * @return \Illuminate\Http\Response
+     */
+
+    public function showDestroy(Metier $metier)
+    {
+        return view('MetierDestroy', compact('metier'));
+    }
+
 }

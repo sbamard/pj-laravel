@@ -15,15 +15,25 @@
 //    return view('cvtheque');
 //});
 
-//Page d'accueil
+/*
+ * Page d'accueil
+ */
 Route::get('/','CvthequeController@index')->name('accueil');
 
-//Route pour la gestion des compétences
+/*
+ * Route pour la gestion des compétences
+ */
 Route::resource('competence','CompetenceController');
 
-//Route pour la gestion des métiers
+/*
+ * Route pour la gestion des métiers
+ * Quand on ajoute une route, on la met avant la route, l'ordre à de l'importance
+ */
+Route::get('metier/{metier}/suppression','MetierController@showDestroy')->name('metier.showDestroy');
 Route::resource('metier','MetierController');
 
-//Route pour la gestion des professionnels
-Route::get('metier/{slug}/professionnel', 'professionnelController@index')->name('professionnel.metier');
+/*
+ * Route pour la gestion des professionnels
+ */
+Route::get('metier/{slug}/professionnel', 'ProfessionnelController@index')->name('professionnel.metier');
 Route::resource('professionnel', 'ProfessionnelController');

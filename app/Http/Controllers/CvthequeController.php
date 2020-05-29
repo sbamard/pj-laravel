@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 class CvthequeController extends Controller
 {
     function index(){
-        return view('cvtheque');
+
+        return view('accueil');
+
     }
 }
