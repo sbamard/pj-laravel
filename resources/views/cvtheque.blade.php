@@ -42,6 +42,17 @@
             </li>
         </ul>
     </div>
+
+    <form class="form-inline" method="POST"  action="{{route('professionnel.recherche')}}">
+        @method('GET')
+        <input type="text" class="form-control" name="recherche" id="recherche"
+               placeholder="Recherchez un pro"> <span class="input-group-btn">
+            <button type="submit" class="btn btn-default">
+                <span class="glyphicon glyphicon-search">Clique</span>
+            </button>
+        </span>
+    </form>
+
 </nav>
 
 

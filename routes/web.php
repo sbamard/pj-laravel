@@ -23,7 +23,9 @@ Route::get('/','CvthequeController@index')->name('accueil');
 /*
  * Route pour la gestion des compétences
  */
+Route::get('competence/recherche', 'CompetenceController@Index')->name('competence.recherche');
 Route::resource('competence','CompetenceController');
+
 
 /*
  * Route pour la gestion des métiers
@@ -35,5 +37,6 @@ Route::resource('metier','MetierController');
 /*
  * Route pour la gestion des professionnels
  */
+Route::get('professionnel/recherche','ProfessionnelController@index')->name('professionnel.recherche');
 Route::get('metier/{slug}/professionnel', 'ProfessionnelController@index')->name('professionnel.metier');
 Route::resource('professionnel', 'ProfessionnelController');

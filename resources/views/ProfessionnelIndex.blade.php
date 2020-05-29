@@ -2,6 +2,7 @@
 
 @section('contenu')
 
+
     <div class="row">
         <div class="col-md-12 space">
             <h1>Liste des professionnels</h1>
@@ -11,10 +12,12 @@
     <div class="col-md-4 d-none d-md-block titre mb-5 mt-5 float-right">
         <select onchange="window.location.href = this.value" class="form-control border-primary">
 
-            <option value="{{ route('professionnel.index') }}" @unless($slug) selected @endunless >Tous les métiers</option>
+            <option value="{{ route('professionnel.index') }}" @unless($slug) selected @endunless >Tous les métiers
+            </option>
 
             @foreach($metiers as $metier)
-                <option value="{{ route('professionnel.metier', $metier->slug) }}" {{ $slug == $metier->slug ? 'selected' : ''}}>
+                <option
+                    value="{{ route('professionnel.metier', $metier->slug) }}" {{ $slug == $metier->slug ? 'selected' : ''}}>
                     {{$metier->libelle}}
                 </option>
             @endforeach
@@ -93,5 +96,7 @@
         @endforelse
         </tbody>
     </table>
-
+    <footer class="pagination justify-content-center">
+        {{ $professionnels->links() }}
+    </footer>
 @endsection

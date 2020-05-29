@@ -5,27 +5,37 @@ namespace App\Http\Controllers;
 use App\Professionnel;
 use App\Competence;
 use App\Metier;
-use App\Http\Requests\Professionnel as ProfessionnelRequest; //Noter l'alias//
-//use Illuminate\Http\Request;
+use App\Http\Requests\Professionnel as ProfessionnelRequest;
+use Illuminate\Http\Request;
 
 class ProfessionnelController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
+     * @param null $slug
      * @return \Illuminate\Http\Response
      */
-    public function index($slug=null)
+    public function index(Request $request, $slug = null)
     {
-        //Créer un objet unique pour les deux cas de figure : avec ou sans slug
-        $obProfessionnels = $slug ?
-            Metier::where('slug', '=', $slug)->firstOrFail()->professionnels():
-            Professionnel::query();
-
-        //Récupération de la liste
-        $professionnels = $obProfessionnels->get();
         $metiers = Metier::all()->sortBy('libelle');
 
+        if ($request->input('recherche')) {
+
+            $val = $request->input('recherche');
+            $professionnels = Professionnel::where('prenom', 'LIKE', '%' . $val . '%')
+                ->orWhere('nom', 'LIKE', '%' . $val . '%')
+                ->oldest('nom')
+                ->paginate(5);
+        } else {
+            $obProfessionnels = $slug ?
+                Metier::where('slug', '=', $slug)->firstOrFail()->professionnels() :
+                Professionnel::query();
+
+            //Récupération de la liste
+            $professionnels = $obProfessionnels->paginate(5);
+        }
         //enfin en réponse la vue
         return view('ProfessionnelIndex', compact('professionnels', 'metiers', 'slug'));
     }
@@ -45,7 +55,7 @@ class ProfessionnelController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  App\Http\Requests\Professionnel $professionnelRequest
+     * @param App\Http\Requests\Professionnel $professionnelRequest
      * @return \Illuminate\Http\Response
      */
     public function store(ProfessionnelRequest $professionnelRequest)
@@ -66,7 +76,7 @@ class ProfessionnelController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  objet $professionnel
+     * @param objet $professionnel
      * @return \Illuminate\Http\Response
      */
     public function show(Professionnel $professionnel)
@@ -82,7 +92,7 @@ class ProfessionnelController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  objet $professionnel
+     * @param objet $professionnel
      * @return \Illuminate\Http\Response
      */
     public function edit(Professionnel $professionnel)
@@ -97,8 +107,8 @@ class ProfessionnelController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  App\Http\Requests\Professionnel $professionnelRequest
+     * @param \Illuminate\Http\Request $request
+     * @param App\Http\Requests\Professionnel $professionnelRequest
      * @return \Illuminate\Http\Response
      */
     public function update(ProfessionnelRequest $professionnelRequest, Professionnel $professionnel)
@@ -119,12 +129,12 @@ class ProfessionnelController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  object modèle compétence $professionnel
+     * @param object modèle compétence $professionnel
      * @return \Illuminate\Http\Response
      */
     public function destroy(Professionnel $professionnel)
     {
         $professionnel->delete();
-        return back()->with('information','Supression effectuée avec succès.');
+        return back()->with('information', 'Supression effectuée avec succès.');
     }
 }

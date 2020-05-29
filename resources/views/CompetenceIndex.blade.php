@@ -3,40 +3,48 @@
 @section('contenu')
 
 
-    <div class="row">
+
+    <div>
         <div class="col-md-12 space">
             <h1>Liste des compétences</h1>
         </div>
+
     </div>
-    <div class="row">
+    <div>
         <div class="col-md-2 space mb-5">
             <a href="{{ route('competence.create') }}" class="btn btn-outline-danger">
-                    Créer une compétence
+                Créer une compétence
             </a>
+            <form class="form-inline" method="POST" action="{{route('competence.recherche')}}">
+                @method('GET')
+                <input type="text" class="form-control" name="recherche" id="recherche"
+                       placeholder="Recherchez une compétence">
+            </form>
         </div>
+
     </div>
 
 
-{{--    directive de type alternative if .--}}
+    {{--    directive de type alternative if .--}}
 
-        @if(session()->has('information'))
-            <div class="row">
-                <div class="col">
-                    <div class="alert alert-success" role="alert">
-                        {{ session('information') }}
-                    </div>
+    @if(session()->has('information'))
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-success" role="alert">
+                    {{ session('information') }}
                 </div>
             </div>
-        @endif
+        </div>
+    @endif
 
 
     <table class="table">
         <thead class="">
-            <tr>
-                <th>#</th>
-                <th>Libellé des compétences</th>
-                <th>Actions</th>
-            </tr>
+        <tr>
+            <th>#</th>
+            <th>Libellé des compétences</th>
+            <th>Actions</th>
+        </tr>
         </thead>
         <tfoot>
         <tr>
@@ -74,6 +82,8 @@
         @endforeach
         </tbody>
     </table>
-
+    <footer class="pagination justify-content-center">
+        {{ $competences->links() }}
+    </footer>
 
 @endsection
