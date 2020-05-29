@@ -89,8 +89,9 @@ class ProfessionnelController extends Controller
     {
         $tabDomaine = explode(',', $professionnel->domaine);
         $professionnel->domaine = $tabDomaine;
+        $competences = Competence::all()->sortBy('libelle'); //Trier par ordre alphabétique
         $metiers = Metier::all();
-        return view('ProfessionnelEdit', compact('professionnel', 'metiers'));
+        return view('ProfessionnelEdit', compact('professionnel', 'metiers', 'competences'));
     }
 
     /**
