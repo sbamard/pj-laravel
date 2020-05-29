@@ -110,6 +110,8 @@ class ProfessionnelController extends Controller
         $valeursDuFormulaire['domaine'] = $laConversion;
         //Enregistrement en BD
         $professionnel->update($valeursDuFormulaire);
+        //Enregistrement dans la table pivot
+        $professionnel->competences()->sync($professionnelRequest->comp);
         return redirect()->route('professionnel.index')->with('information', 'Le professionnel a bien été modifié');
     }
 

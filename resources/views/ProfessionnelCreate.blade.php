@@ -95,10 +95,10 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="email" class="col-md-2 col-form-label text-left">Adresse mail :</label>
+                    <label for="email" class="col-md-2 col-form-label text-left">Adresse email :</label>
                     <div class="col-md-10">
                         <input type="text" class="form-control @error('email') border-danger @enderror"
-                               id="email" name="email" value="{{old('email')}}" placeholder="votreadresse@mail.com">
+                               id="email" name="email" value="{{old('email')}}" placeholder="votreadresse@email.com">
 
                         @error('email')
                         <p class="text-danger" role="alert">{{ $message }}</p>

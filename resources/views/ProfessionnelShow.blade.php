@@ -55,7 +55,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="email" class="col-md-2 col-form-label text-left">Adresse mail :</label>
+                    <label for="email" class="col-md-2 col-form-label text-left">Adresse email :</label>
                     <div class="col-md-10">
                         <input type="text" class="form-control" id="email" name="email" value="{{ $professionnel->email }}" readonly>
                     </div>
